@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<root id="0">
+<!--настройки сервера-->
+<server>
+    <!--IP сервера. Ссылка на редирект по рекламному предложению содержит в себе адрес сервера, который её создал-->
+    <ip>127.0.0.1</ip>
+    <lock_file>/tmp/rgadtrackerd.lock</lock_file>
+    <pid_file>/tmp/rgadtrackerd.pid</pid_file>
+    <user>alex</user>
+    <!--путь к файлу сокета-->
+    <socket_path>/tmp/rgadtrackerd.sock</socket_path>
+    <!--количество ниток-->
+    <children>1</children>
+
+    <!--путь к фалу базы данных sqlite или :memory:-->
+    <sqlite>
+        <!--файл базы-->
+        <db>:memory:</db>
+        <!--путь к каталогу дампа sqlite базы-->
+        <schema>db_dump</schema>
+    </sqlite>
+
+    <!--путь к очереди сообщений-->
+    <mq_path>guest:guest@localhost//</mq_path>
+
+    <!--Путь к файлу базы данных MaxMind GeoIP City Edition-->
+    <geocity_path>/usr/share/GeoIP/GeoLiteCity.dat</geocity_path>
+
+    <cookie id="unique">
+        <name>yottos_unique_id</name>
+        <domain>.yottos.com.</domain>
+        <path>/</path>
+    </cookie>
+
+    <cookie id="tracking">
+        <name>yottos_tracking_id</name>
+        <domain>.yottos.com.</domain>
+        <path>/</path>
+    </cookie>
+
+    <templates>
+        <out>templates/out.html</out>
+        <error>templates/error.html</error>
+    </templates>
+</server>
+
+<!--Redis-сервер ретаргетинг-->
+<retargeting>
+    <redis>
+            <!--IP-адрес-->
+            <host>127.0.0.1</host>
+            <!--порт-->
+            <port>6380</port>
+    </redis>
+    <redis>
+            <!--IP-адрес-->
+            <host>127.0.0.1</host>
+            <!--порт-->
+            <port>6378</port>
+    </redis>
+    <!--количество суток ретаргетинга(по умолчанию), если нет данных с сайта(период жизни ключа)-->
+    <ttl>14</ttl>
+</retargeting>
+
+<!--Redis-сервер история поиска и контекст страницы-->
+<short_term>
+    <redis>
+            <!--IP-адрес-->
+            <host>127.0.0.1</host>
+            <!--порт-->
+            <port>6377</port>
+    </redis>
+    <redis>
+            <!--IP-адрес-->
+            <host>127.0.0.1</host>
+            <!--порт-->
+            <port>6376</port>
+    </redis>
+    <!--период жизни ключа в сутках-->
+    <ttl>30</ttl>
+</short_term>
+
+<!--Параметры подключения к базам данных-->
+<mongo>
+    <!--Параметры подключения к основной базе данных-->
+    <main>
+        <!--Адрес сервера баз данных-->
+        <host>212.113.32.146:27018</host>
+        <host>212.113.32.147:27018</host>
+        <host>srv-1.yottos.com:27017</host>
+        <host>srv-2.yottos.com:27018</host>
+        <host>srv-3.yottos.com:27018</host>
+        <!--Название базы данных-->
+        <db>getmyad_db</db>
+        <!--Название группы реплик (если база данных находится в Replica Set)-->
+        <!--set></set-->
+        <set>vsrv</set>
+        <!--Может ли сервис подключаться к slave серверам базам данных.
+        Это балансирует нагрузку в режиме только для чтения, но появляется
+        вероятность чтения не самых свежих данных (разница от мастера до
+        нескольких секунд).-->
+        <slave>true</slave>
+
+        <login></login>
+        <passwd></passwd>
+    </main>
+</mongo>
+
+<log>
+    <coretime>1</coretime>
+    <key>1</key>
+    <country>0</country>
+    <region>0</region>
+    <context>1</context>
+    <search>1</search>
+    <accountId>1</accountId>
+    <OutPutOfferIds>1</OutPutOfferIds>
+</log>
+
+</root>
